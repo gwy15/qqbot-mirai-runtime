@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y unzip \
     && rm mcl-1.0.5.zip \
     && rm -rf /var/lib/apt/lists/*
 
+COPY mirai-api-http-v2.0.2.mirai.jar /code/plugins/
+
 RUN java -jar mcl.jar --dry-run
 
 ENTRYPOINT [ "java", "-jar" "mcl.jar" ]
