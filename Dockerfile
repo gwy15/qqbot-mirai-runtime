@@ -6,7 +6,7 @@ COPY mcl-1.0.5.zip /code/
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8 \
+    LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai
 
 RUN apt-get update && apt-get install -y unzip \
