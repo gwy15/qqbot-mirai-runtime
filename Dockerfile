@@ -23,7 +23,7 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai
 
-COPY --from=unzipper /code/* /code
+COPY --from=unzipper /code/ /code
 COPY                 mirai-api-http-v2.3.3.mirai.jar /code/plugins/
 
 RUN java -jar mcl.jar --dry-run
