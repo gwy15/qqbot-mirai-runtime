@@ -1,23 +1,31 @@
-FROM mcr.microsoft.com/java/jre:11-zulu-ubuntu
+# unziper
+FROM debian:bullseye AS unzipper
 
 WORKDIR /code
 
-COPY mcl-1.0.5.zip /code/
+RUN apt-get update \
+    && apt-get install -y unzip
+
+COPY mcl-1.2.2.zip /code/
+
+RUN unzip mcl-1.2.2.zip \
+    && chmod +x ./mcl \
+    && rm mcl-1.2.2.zip
+
+
+# runner
+FROM openjdk:11-jre-slim-bullseye
+
+WORKDIR /code
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai
 
-RUN apt-get update && apt-get install -y unzip \
-    && unzip mcl-1.0.5.zip \
-    && chmod +x mcl \
-    && rm mcl-1.0.5.zip \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY mirai-api-http-v2.0.2.mirai.jar /code/plugins/
+COPY --from=unzipper /code/* /code
+COPY                 mirai-api-http-v2.3.3.mirai.jar /code/plugins/
 
 RUN java -jar mcl.jar --dry-run
 
-ENTRYPOINT [ "java", "-jar", "/code/mcl.jar" ]
-CMD []
+CMD [ "java", "-jar", "/code/mcl.jar" ]
