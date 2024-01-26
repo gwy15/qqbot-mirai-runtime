@@ -6,11 +6,11 @@ WORKDIR /code
 RUN apt-get update \
     && apt-get install -y unzip
 
-COPY mcl-1.2.2.zip /code/
+COPY mcl-2.1.2.zip /code/
 
-RUN unzip mcl-1.2.2.zip \
+RUN unzip mcl-2.1.2.zip \
     && chmod +x ./mcl \
-    && rm mcl-1.2.2.zip
+    && rm mcl-2.1.2.zip
 
 
 # runner
@@ -24,7 +24,6 @@ ENV LANG=en_US.UTF-8 \
     TZ=Asia/Shanghai
 
 COPY --from=unzipper /code/ /code
-COPY                 mirai-api-http-v2.3.3.mirai.jar /code/plugins/
 
 RUN java -jar mcl.jar --dry-run
 
